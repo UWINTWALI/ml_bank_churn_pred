@@ -1,0 +1,6 @@
+[data-testid="stSidebar"] { width: 300px !important; }
+.metric-card { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    color: white; padding: 1rem; border-radius: 12px; text-align: center; 
+}
+h1 { color: #1f77b4 !important; text-align: center; }
