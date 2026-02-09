@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from utils.file_utils import handle_file_upload
 from utils.kpi_calculator import calculate_kpis
 
@@ -13,7 +14,7 @@ class Batch:
         if df is not None:
             probs = self.pipeline.predict_proba(df)[:, 1]
             preds = (probs > self.threshold).astype(int)
-            df['churn_prob'] = probs
+            df['churn_prob'] = list(probs)
             df['prediction'] = preds
             
             # Sidebar filter
@@ -29,5 +30,9 @@ class Batch:
             col3.metric("Rate", f"{kpis['rate']:.1%}")
             col4.metric("Value", f"${kpis['net_value']:,.0f}")
             
-            st.dataframe(df_filtered[['churn_prob', 'prediction']])
+            st.write(f"Total Records: {len(df)} | Filtered Records: {len(df_filtered)}")
+            
+            # Display all columns with prediction and probability at the end, excluding churn_prob from middle
+            display_cols = [col for col in df_filtered.columns if col not in ['prediction', 'churn_prob']] + ['churn_prob', 'prediction']
+            st.dataframe(df_filtered[display_cols], use_container_width=True)
             st.download_button("Download", df.to_csv(index=False).encode(), f"{filename}_results.csv")

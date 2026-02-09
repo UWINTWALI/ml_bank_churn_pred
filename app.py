@@ -42,3 +42,4 @@ page_map = {
 }
 # Render page
 page_map[selected]()
+

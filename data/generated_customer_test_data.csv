@@ -1,4 +1,4 @@
-RowNumber,CustomerId,Surname,CreditScore,Geography,Gender,Age,Tenure,Balance,NumOfProducts,HasCrCard,IsActiveMember,EstimatedSalary
+rownumber, customerid, surname, creditscore, geography, gender, age, tenure, balance, numofproducts, hascrcard, isactivemember, estimatedsalary
 1,69685745,Gonzalez,543,France,Female,42,9,107865.34,2,0,1,30628.29
 2,65700884,Sexton,725,Germany,Male,39,7,69696.32,3,1,1,70315.97
 3,94177321,Moore,684,France,Male,39,7,0.0,1,1,0,17447.92
