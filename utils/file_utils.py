@@ -4,6 +4,7 @@ import pandas as pd
 
 def handle_file_upload():
     """Handle CSV upload with validation"""
+   
     uploaded_file = st.file_uploader("Upload customer CSV", type='csv')
     
     if uploaded_file is not None:

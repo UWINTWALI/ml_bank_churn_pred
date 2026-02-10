@@ -14,7 +14,39 @@ class Batch:
         # self.pipeline, self.threshold, _, _ = model_data
 
     def render(self):
-        st.markdown("# Batch Predictions")
+        
+                # Instruction section with shadow
+        st.markdown(
+            """
+            <style>
+            .shadow-box {
+                background-color: #f9f9f9;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 1px 1px 6px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            f"""
+            <div class="shadow-box">
+            <h4 style="margin-bottom:10px;"> Batch Prediction Instructions</h4>
+            <ul style="margin-top:0; padding-left:20px;">
+                <li><strong>Upload your dataset</strong> - CSV file with customer data</li>
+                <li>Ensure column names match features: <code>customerid, creditscore, geography, gender, age, tenure, balance, numofproducts, hascrcard, isactivemember, estimatedsalary</code></li>
+                <li>Download results with predicted churn and probability</li>
+            </ul>
+            <p style="font-size:0.9em; color:gray; margin-top:5px;">Tip: Make sure no missing values in required features for accurate predictions.</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        
 
         df, filename = handle_file_upload()
         if df is not None:
@@ -31,12 +63,15 @@ class Batch:
                 df_filtered = df[df['churn_prob'] > min_prob]
 
             # KPIs
-            kpis = calculate_kpis(df_filtered, df_filtered['prediction'])
-            col1, col2, col3, col4 = st.columns(4)
-            col1.metric("Customers", kpis['total'])
-            col2.metric("High Risk", kpis['churners'])
-            col3.metric("Rate", f"{kpis['rate']:.1%}")
-            col4.metric("Value", f"${kpis['net_value']:,.0f}")
+            kpis = calculate_kpis(df, df_filtered['prediction'])
+            kpis2 = calculate_kpis(df_filtered, df_filtered['prediction'])
+            
+            col1, col2, col3, col4, col5 = st.columns(5)
+            col2.metric(" Total customers", len(df))
+            col2.metric("Churners on custom probability", kpis2['total'])
+            col3.metric("High Risk", kpis['churners'])
+            col4.metric("Rate", f"{kpis['rate']:.1%}")
+            col5.metric("Value", f"${kpis['net_value']:,.0f}")
 
             st.write(f"Total Records: {len(df)} | Filtered Records: {len(df_filtered)}")
 

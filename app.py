@@ -32,7 +32,7 @@ metrics = model_data["metrics"]
 
 # Navigation
 with st.sidebar:
-    st.markdown("## Churn Dashboard")
+    st.markdown("## Churn Dashboard Menu")
     selected = option_menu(
         menu_title=None,
         options=["Dashboard", "Prediction", "Batch", "Metrics", "Insights"],

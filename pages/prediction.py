@@ -45,7 +45,7 @@ class Prediction:
             
             col_a, col_b = st.columns([1, 3])
             with col_a:
-                status = "HIGH RISK" if pred else "LOW RISK"
+                status = "Might Churn!" if pred else "Might Stay!"
                 color = "#ef4444" if pred else "#10b981"
                 st.markdown(f"<h2 style='color:{color};text-align:center'>{status}</h2>", unsafe_allow_html=True)
             with col_b:
