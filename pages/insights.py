@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 class Insights:
     def __init__(self, model_data):
         self.model_data = model_data
@@ -24,3 +25,4 @@ class Insights:
         2. Budget: $200K for maximum ROI
         3. Expected: Save 300+ customers
         """)
+
