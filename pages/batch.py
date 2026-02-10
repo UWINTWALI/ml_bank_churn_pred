@@ -67,10 +67,10 @@ class Batch:
             kpis2 = calculate_kpis(df_filtered, df_filtered['prediction'])
             
             col1, col2, col3, col4, col5 = st.columns(5)
-            col2.metric(" Total customers", len(df))
+            col2.metric("Total customers in table", len(df))
             col2.metric("Churners on custom probability", kpis2['total'])
             col3.metric("High Risk", kpis['churners'])
-            col4.metric("Rate", f"{kpis['rate']:.1%}")
+            col4.metric("Churn Rate", f"{kpis['rate']:.1%}")
             col5.metric("Value", f"${kpis['net_value']:,.0f}")
 
             st.write(f"Total Records: {len(df)} | Filtered Records: {len(df_filtered)}")
