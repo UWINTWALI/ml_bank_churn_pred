@@ -9,7 +9,9 @@ from utils.kpi_calculator import calculate_kpis
 
 class Batch:
     def __init__(self, model_data):
-        self.pipeline, self.threshold, _, _ = model_data
+        self.pipeline = model_data["pipeline"]
+        self.threshold = model_data["threshold"]
+        # self.pipeline, self.threshold, _, _ = model_data
 
     def render(self):
         st.markdown("# Batch Predictions")

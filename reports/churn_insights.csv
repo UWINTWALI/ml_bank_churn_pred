@@ -1,0 +1,11 @@
+0,1,2
+Metric,Value,Impact
+Optimal Threshold,0.4,Maximizes profit
+Net Business Value,"$201,600",Profit after costs
+Campaign Size,846 customers,56% smaller than threshold 0.1
+Churners Caught,75.9%,3 out of 4 actual churners
+Targeting Accuracy,36.5%,36.5% of flagged will churn
+ROI per Dollar,$2.88,For every $1 spent
+Promotions Needed,"$107,400",Cost of false positives
+Customers Saved,309,True churners retained
+Report Date,2026-02-08,Analysis timestamp

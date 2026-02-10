@@ -1,20 +1,20 @@
-# Clean model loading with exact notebook structure
 import joblib
-import streamlit as st
+import json
 
 def load_churn_model():
-    """Load churn model with exact notebook structure"""
-    try:
-        model_data = joblib.load('models/churn_pipeline.pkl')
-        return (
-            model_data['pipeline'],           # sklearn pipeline
-            model_data['threshold'],          # 0.4
-            model_data['feature_names'],      # processed feature names
-            model_data['metrics']             # model performance
-        )
-    except FileNotFoundError:
-        st.error(" Run notebook first: `joblib.dump({'pipeline': churn_pipeline, ...})`")
-        st.stop()
-    except KeyError as e:
-        st.error(f" Model missing key: {e}")
-        st.stop()
+    # Load pipeline
+    model_data = joblib.load("models/churn_pipeline.pkl")
+
+    # Load report
+    with open("reports/churn_model_report.json", "r") as f:
+        report_data = json.load(f)
+
+    return {
+        "pipeline": model_data["pipeline"],
+        "threshold": model_data["threshold"],
+        "feature_names": model_data["feature_names"],
+        "metrics": model_data["metrics"],
+        "threshold_analysis": report_data["threshold_analysis"],
+        "business_impact": report_data["business_impact"],
+        "confusion_matrix": report_data["confusion_matrix"]
+    }

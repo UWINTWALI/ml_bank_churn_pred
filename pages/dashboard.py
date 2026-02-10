@@ -3,7 +3,10 @@ import plotly.express as px
 
 class Dashboard:
     def __init__(self, model_data):
-        self.pipeline, self.threshold, self.feature_names, self.metrics = model_data
+        self.pipeline = model_data["pipeline"]
+        self.threshold = model_data["threshold"]
+        self.feature_names = model_data["feature_names"]
+        self.metrics = model_data["metrics"]
     
     def render(self):
         st.markdown("# Churn Overview")

@@ -2,7 +2,9 @@ import streamlit as st
 
 class Metrics:
     def __init__(self, model_data):
-        self.metrics = model_data[3]
+        # self.metrics = model_data[3]
+        # Access the metrics dictionary from model_data
+        self.metrics = model_data["metrics"]
     
     def render(self):
         st.markdown("# Model Performance")

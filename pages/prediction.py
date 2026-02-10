@@ -3,7 +3,10 @@ from utils.data_loader import validate_customer_data
 
 class Prediction:
     def __init__(self, model_data):
-        self.pipeline, self.threshold, _, _ = model_data
+        self.pipeline = model_data["pipeline"]
+        self.threshold = model_data["threshold"]
+        # self.pipeline, self.threshold, _, _ = model_data
+        
     
     def render(self):
         st.markdown("# Single Customer Prediction")
