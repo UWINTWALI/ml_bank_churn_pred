@@ -5,7 +5,7 @@ import utils.model_utils
 
 # Config
 st.set_page_config(
-    page_title="Churn Dashboard",
+    page_title="Churn Prediction Dashboard",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -32,10 +32,10 @@ metrics = model_data["metrics"]
 
 # Navigation
 with st.sidebar:
-    st.markdown("## Churn Dashboard Menu")
+    st.markdown("## Churn Prediction Dashboard Menu")
     selected = option_menu(
         menu_title=None,
-        options=["Dashboard", "Prediction", "Batch", "Metrics", "Insights"],
+        options=["Dashboard", "Single User Prediction", "Mass Prediction", "Metrics", "Insights"],
         icons=["bar-chart", "person", "table", "graph-up", "lightbulb"],
         menu_icon="cast",
         default_index=0,
@@ -44,8 +44,8 @@ with st.sidebar:
 # Page map
 page_map = {
     "Dashboard": pages.Dashboard(model_data).render,
-    "Prediction": pages.Prediction(model_data).render,
-    "Batch": pages.Batch(model_data).render,
+    "Single User Prediction": pages.Prediction(model_data).render,
+    "Mass Prediction": pages.Batch(model_data).render,
     "Metrics": pages.Metrics(model_data).render,
     "Insights": pages.Insights(model_data).render,
 }

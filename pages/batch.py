@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import io
 from utils.file_utils import handle_file_upload
 from utils.kpi_calculator import calculate_kpis
 
@@ -37,7 +38,36 @@ class Batch:
             <h4 style="margin-bottom:10px;"> Batch Prediction Instructions</h4>
             <ul style="margin-top:0; padding-left:20px;">
                 <li><strong>Upload your dataset</strong> - CSV file with customer data</li>
-                <li>Ensure column names match features: <code>customerid, creditscore, geography, gender, age, tenure, balance, numofproducts, hascrcard, isactivemember, estimatedsalary</code></li>
+                <li>Ensure your CSV column names match the table below:</li>
+            </ul>
+            
+            #### sample table for guidance
+            <div style="overflow-x:auto; margin: 8px 0 10px 0;">
+            <table style="border-collapse:collapse; font-size:0.8em; width:100%;">
+                <thead>
+                <tr style="background-color:#e8f0fe;">
+                    <th style="border:1px solid #ccc; padding:5px 8px;">customerid</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">creditscore</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">geography</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">gender</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">age</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">tenure</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">balance</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">numofproducts</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">hascrcard</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">isactivemember</th>
+                    <th style="border:1px solid #ccc; padding:5px 8px;">estimatedsalary</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="11" style="border:1px solid #ccc; padding:5px 8px; color:#aaa; text-align:center; font-style:italic;">— data records —</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <ul style="margin-top:0; padding-left:20px;">
                 <li>Download results with predicted churn and probability</li>
             </ul>
             <p style="font-size:0.9em; color:gray; margin-top:5px;">Tip: Make sure no missing values in required features for accurate predictions.</p>
@@ -91,9 +121,10 @@ class Batch:
             else:
                 churn_col = None
 
+            # plots holds (figure, title) tuples
             plots = []
 
-            # churn count (small)
+            # churn count
             if churn_col is not None:
                 churn_counts = df[churn_col].value_counts().reindex([0, 1], fill_value=0)
                 fig_count, ax_count = plt.subplots(figsize=(5, 3))
@@ -101,9 +132,11 @@ class Batch:
                 ax_count.set_title('Customer Churn Distribution')
                 ax_count.set_xlabel('Churn Status')
                 ax_count.set_ylabel('Number of Customers')
+                ax_count.tick_params(axis='x', rotation=45)
                 for p in ax_count.patches:
                     ax_count.annotate(f'{int(p.get_height()):,}', (p.get_x() + p.get_width() / 2., p.get_height()), ha='center', va='bottom', fontsize=9)
-                plots.append(fig_count)
+                fig_count.tight_layout()
+                plots.append((fig_count, 'churn_distribution'))
 
                 # churn pie
                 fig_pie, ax_pie = plt.subplots(figsize=(5, 3))
@@ -111,7 +144,8 @@ class Batch:
                 sizes = [churn_counts.get(0, 0), churn_counts.get(1, 0)]
                 ax_pie.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=['lightgreen', 'lightcoral'], explode=(0, 0.05), textprops={'fontsize': 9})
                 ax_pie.set_title('Churn Rate Percentage')
-                plots.append(fig_pie)
+                fig_pie.tight_layout()
+                plots.append((fig_pie, 'churn_rate_pie'))
 
             # churn by age groups
             if 'age' in df.columns and churn_col is not None:
@@ -124,9 +158,11 @@ class Batch:
                 ax_age.set_title('Churn Rate by Age Group (%)')
                 ax_age.set_xlabel('Age Group')
                 ax_age.set_ylabel('Churn Rate (%)')
+                ax_age.tick_params(axis='x', rotation=45)
                 for p in ax_age.patches:
                     ax_age.annotate(f'{p.get_height():.1f}%', (p.get_x() + p.get_width() / 2., p.get_height()), ha='center', va='bottom', fontsize=9)
-                plots.append(fig_age)
+                fig_age.tight_layout()
+                plots.append((fig_age, 'churn_by_age_group'))
 
             # churn by balance (binned)
             balance_col = None
@@ -148,9 +184,11 @@ class Batch:
                     ax_bal.set_title('Churn Rate by Balance Group (%)')
                     ax_bal.set_xlabel('Balance Group')
                     ax_bal.set_ylabel('Churn Rate (%)')
+                    ax_bal.tick_params(axis='x', rotation=45)
                     for p in ax_bal.patches:
                         ax_bal.annotate(f'{p.get_height():.1f}%', (p.get_x() + p.get_width() / 2., p.get_height()), ha='center', va='bottom', fontsize=9)
-                    plots.append(fig_bal)
+                    fig_bal.tight_layout()
+                    plots.append((fig_bal, 'churn_by_balance_group'))
                 except Exception:
                     # if binning fails, skip gracefully
                     pass
@@ -192,14 +230,14 @@ class Batch:
                 ax_balance.set_title('Churn Rate by Balance Quartile (%)')
                 ax_balance.set_xlabel('Balance Quartile')
                 ax_balance.set_ylabel('Churn Rate (%)')
-                ax_balance.tick_params(axis='x', rotation=0)
+                ax_balance.tick_params(axis='x', rotation=45)
 
                 for bar, rate in zip(bars, balance_churn.values):
                     ax_balance.annotate(f'{rate:.1f}%',
                                         (bar.get_x() + bar.get_width() / 2, bar.get_height()),
                                         ha='center', va='bottom', fontsize=9)
-
-                plots.append(fig_balance)
+                fig_balance.tight_layout()
+                plots.append((fig_balance, 'churn_by_balance_quartile'))
 
             # Numeric distributions
             numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
@@ -211,13 +249,37 @@ class Batch:
                     fig_hist, ax_hist = plt.subplots(figsize=(5, 3))
                     sns.histplot(df[col].dropna(), kde=True, ax=ax_hist)
                     ax_hist.set_title(f'Distribution of {col}')
-                    plots.append(fig_hist)
+                    ax_hist.tick_params(axis='x', rotation=45)
+                    fig_hist.tight_layout()
+                    plots.append((fig_hist, f'dist_{col}'))
 
-            # Render plots in a two-column grid
+            # Render plots in a two-column grid with individual download buttons
+            def fig_to_png(fig):
+                buf = io.BytesIO()
+                fig.savefig(buf, format='png', dpi=150, bbox_inches='tight')
+                buf.seek(0)
+                return buf
+
             for i in range(0, len(plots), 2):
                 cols = st.columns(2)
                 with cols[0]:
-                    st.pyplot(plots[i])
+                    fig0, name0 = plots[i]
+                    st.pyplot(fig0)
+                    st.download_button(
+                        label=f"⬇ Download",
+                        data=fig_to_png(fig0),
+                        file_name=f"{name0}.png",
+                        mime="image/png",
+                        key=f"dl_{i}"
+                    )
                 if i + 1 < len(plots):
                     with cols[1]:
-                        st.pyplot(plots[i + 1])
+                        fig1, name1 = plots[i + 1]
+                        st.pyplot(fig1)
+                        st.download_button(
+                            label=f"⬇ Download",
+                            data=fig_to_png(fig1),
+                            file_name=f"{name1}.png",
+                            mime="image/png",
+                            key=f"dl_{i+1}"
+                        )

@@ -43,10 +43,17 @@ class Prediction:
             prob = self.pipeline.predict_proba(data)[0, 1]
             pred = 1 if prob > self.threshold else 0
             
-            col_a, col_b = st.columns([1, 3])
-            with col_a:
-                status = "Might Churn!" if pred else "Might Stay!"
-                color = "#ef4444" if pred else "#10b981"
-                st.markdown(f"<h2 style='color:{color};text-align:center'>{status}</h2>", unsafe_allow_html=True)
-            with col_b:
-                st.metric("Churn Probability", f"{prob:.1%}")
+            # Inline result banner shown right below the Predict button
+            if pred:
+                st.error(
+                    "Due to high risk, Customer might Churn!",
+                    icon=":material/warning:"
+                )
+            else:
+                st.success(
+                    "Due to low risk, Customer is not likely to Churn!",
+                    icon=":material/check_circle:"
+                )
+
+            # Probability metric shown alongside the banner
+            st.metric("Churn Probability", f"{prob:.1%}")
