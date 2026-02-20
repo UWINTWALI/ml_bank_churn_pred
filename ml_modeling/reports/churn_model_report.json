@@ -1,0 +1,115 @@
+{
+    "model_performance": {
+        "phase1": {
+            "precision": 0.36524822695035464,
+            "recall": 0.7592137592137592,
+            "f1": 0.4932162809257781,
+            "roc_auc": 0.7770729126661331
+        }
+    },
+    "business_impact": {
+        "total_cost": "205400",
+        "total_value": "309000",
+        "net_value": "201600",
+        "cost_per_saved_customer": 347.5728155339806
+    },
+    "confusion_matrix": {
+        "tn": 1056,
+        "fp": 537,
+        "fn": 98,
+        "tp": 309
+    },
+    "threshold_analysis": [
+        {
+            "threshold": 0.1,
+            "precision": 0.21174004192872117,
+            "recall": 0.9926289926289926,
+            "f1": 0.3490280777537797,
+            "predicted_churners": 1908,
+            "fp_count": 1504,
+            "fn_count": 3,
+            "net_value": 103200
+        },
+        {
+            "threshold": 0.2,
+            "precision": 0.24681122448979592,
+            "recall": 0.9508599508599509,
+            "f1": 0.39189873417721516,
+            "predicted_churners": 1568,
+            "fp_count": 1181,
+            "fn_count": 20,
+            "net_value": 150800
+        },
+        {
+            "threshold": 0.30000000000000004,
+            "precision": 0.30142737195633923,
+            "recall": 0.8820638820638821,
+            "f1": 0.4493116395494368,
+            "predicted_churners": 1191,
+            "fp_count": 832,
+            "fn_count": 48,
+            "net_value": 192600
+        },
+        {
+            "threshold": 0.4,
+            "precision": 0.36524822695035464,
+            "recall": 0.7592137592137592,
+            "f1": 0.4932162809257781,
+            "predicted_churners": 846,
+            "fp_count": 537,
+            "fn_count": 98,
+            "net_value": 201600
+        },
+        {
+            "threshold": 0.5,
+            "precision": 0.43309859154929575,
+            "recall": 0.6044226044226044,
+            "f1": 0.5046153846153847,
+            "predicted_churners": 568,
+            "fp_count": 322,
+            "fn_count": 161,
+            "net_value": 181600
+        },
+        {
+            "threshold": 0.6,
+            "precision": 0.511049723756906,
+            "recall": 0.45454545454545453,
+            "f1": 0.48114434330299083,
+            "predicted_churners": 362,
+            "fp_count": 177,
+            "fn_count": 222,
+            "net_value": 149600
+        },
+        {
+            "threshold": 0.7000000000000001,
+            "precision": 0.5202020202020202,
+            "recall": 0.25307125307125306,
+            "f1": 0.3404958677685951,
+            "predicted_churners": 198,
+            "fp_count": 95,
+            "fn_count": 304,
+            "net_value": 84000
+        },
+        {
+            "threshold": 0.8,
+            "precision": 0.6067415730337079,
+            "recall": 0.13267813267813267,
+            "f1": 0.21774193548387094,
+            "predicted_churners": 89,
+            "fp_count": 35,
+            "fn_count": 353,
+            "net_value": 47000
+        }
+    ],
+    "execution_metadata": {
+        "execution_date": "2026-02-10 21:01:07",
+        "model_type": "LogisticRegression"
+    },
+    "model_parameters": {
+        "class_weights": {
+            "0": 1,
+            "1": 3
+        },
+        "decision_threshold": 0.4
+    }
+}
