@@ -4,26 +4,26 @@ Data Summary,Total Samples,"10,000",Total customer base analyzed
 Data Summary,Training Samples,"8,000",Data used to train model
 Data Summary,Test Samples,"2,000",Data used to validate performance
 Data Summary,Churn Rate,20.37%,Baseline churn rate in data
-Model Performance,Precision,36.52%,% of predicted churners who actually churn
-Model Performance,Recall,75.92%,% of actual churners correctly identified
-Model Performance,F1-Score,0.493,Balanced performance metric
-Model Performance,ROC-AUC,0.777,Overall model discrimination ability
-Business Impact,Predicted Churners,846,Customers flagged for retention outreach
-Business Impact,True Churners Identified,309,Actual churners correctly caught
-Business Impact,Unnecessary Promotions,537,Customers flagged who wouldn't have churned
-Business Impact,Missed Churners,98,Actual churners the model missed
-Business Impact,Net Business Value,"$201,600",Profit after promotion costs
-Business Impact,Cost Per Saved Customer,$348,Average promotion waste per saved customer
+Model Performance,Precision,57.00%,% of predicted churners who actually churn
+Model Performance,Recall,71.01%,% of actual churners correctly identified
+Model Performance,F1-Score,0.632,Balanced performance metric
+Model Performance,ROC-AUC,0.864,Overall model discrimination ability
+Business Impact,Predicted Churners,507,Customers flagged for retention outreach
+Business Impact,True Churners Identified,289,Actual churners correctly caught
+Business Impact,Unnecessary Promotions,218,Customers flagged who wouldn't have churned
+Business Impact,Missed Churners,118,Actual churners the model missed
+Business Impact,Net Business Value,"$245,400",Profit after promotion costs
+Business Impact,Cost Per Saved Customer,$151,Average promotion waste per saved customer
 Model Configuration,Decision Threshold,0.4,Optimized cutoff point for predictions
 Model Configuration,Business Assumption,Missing churner costs 3x false positive,Risk weighting strategy
 Model Configuration,Model Class Weights,"{0: 1, 1: 3}",Penalizes missing churners more heavily
-Campaign Planning,Recommended Campaign Size,846,Target customers for retention efforts
-Campaign Planning,Expected Customer Savings,"$309,000",From 309 saved customers
-Campaign Planning,Promotion Budget Needed,"$107,400",For 537 false positives
-Campaign Planning,Cost-Benefit Ratio,1:2.9,Savings per $1 of cost
-Campaign Planning,Churn Capture Rate,75.9%,Of potential churners caught
-Campaign Planning,Targeting Accuracy,36.5%,Of predictions that are correct
-Campaign Planning,ROI Per Dollar,$2.88,Saved per $1 spent on promotions
+Campaign Planning,Recommended Campaign Size,507,Target customers for retention efforts
+Campaign Planning,Expected Customer Savings,"$289,000",From 289 saved customers
+Campaign Planning,Promotion Budget Needed,"$43,600",For 218 false positives
+Campaign Planning,Cost-Benefit Ratio,1:6.6,Savings per $1 of cost
+Campaign Planning,Churn Capture Rate,71.0%,Of potential churners caught
+Campaign Planning,Targeting Accuracy,57.0%,Of predictions that are correct
+Campaign Planning,ROI Per Dollar,$6.63,Saved per $1 spent on promotions
 Key Insights,Optimal Threshold,0.4,"Maximizes business value at $201,600"
 Key Insights,Efficiency Gain,56% reduction,"From 1,908 to 846 customers targeted"
 Key Insights,Value Trade-off,Best balance,75.9% recall with manageable false positives
