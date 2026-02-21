@@ -41,7 +41,8 @@ class Batch:
                 <li>Ensure your CSV column names match the table below:</li>
             </ul>
             
-            #### sample table for guidance
+            #### File upload should atleast contain the following columns:
+            *for model to make accurate predictions*
             <div style="overflow-x:auto; margin: 8px 0 10px 0;">
             <table style="border-collapse:collapse; font-size:0.8em; width:100%;">
                 <thead>
@@ -78,9 +79,81 @@ class Batch:
 
         
 
-        df, filename = handle_file_upload()
+        df, filename, upload_error = handle_file_upload()
+
+        # ── Friendly popup when the file has no usable columns ──────────────
+        if upload_error == "no_features":
+            st.markdown(
+                """
+                <style>
+                .no-feat-popup {
+                    background: #fff3cd;
+                    border: 1.5px solid #ffc107;
+                    border-radius: 10px;
+                    padding: 22px 28px;
+                    max-width: 520px;
+                    margin: 40px auto;
+                    box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+                    text-align: center;
+                }
+                .no-feat-popup h3 { color: #856404; margin-bottom: 8px; }
+                .no-feat-popup p  { color: #533f03; font-size: 0.95em; margin: 0; }
+                </style>
+                <div class="no-feat-popup">
+                    <h3>Cannot Extract Model Features</h3>
+                    <p>
+                        The uploaded file does not contain any of the columns
+                        required for prediction.<br><br>
+                        Please upload a CSV that includes at least the following columns:<br>
+                        <em>customerid, creditscore, geography, gender, age,
+                        tenure, balance, numofproducts, hascrcard,
+                        isactivemember, estimatedsalary</em>
+                    </p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        # ── helper to render the "no features" popup ────────────────────────
+        def _show_no_features_popup():
+            st.markdown(
+                """
+                <style>
+                .no-feat-popup {
+                    background: #fff3cd;
+                    border: 1.5px solid #ffc107;
+                    border-radius: 10px;
+                    padding: 22px 28px;
+                    max-width: 520px;
+                    margin: 40px auto;
+                    box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+                    text-align: center;
+                }
+                .no-feat-popup h3 { color: #856404; margin-bottom: 8px; }
+                .no-feat-popup p  { color: #533f03; font-size: 0.95em; margin: 0; }
+                </style>
+                <div class="no-feat-popup">
+                    <h3>No Columns for Guiding Predictions</h3>
+                    <p>
+                        The model could not find the columns it needs to make
+                        predictions from your file.<br><br>
+                        Please upload a CSV that contains at least the following group of columns:<br>
+                        <em>customerid, creditscore, geography, gender, age,
+                        tenure, balance, numofproducts, hascrcard,
+                        isactivemember, estimatedsalary</em>
+                    </p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
         if df is not None:
-            probs = self.pipeline.predict_proba(df)[:, 1]
+            try:
+                probs = self.pipeline.predict_proba(df)[:, 1]
+            except (KeyError, ValueError):
+                _show_no_features_popup()
+                return  # stop rendering – nothing more to show
+
             preds = (probs > self.threshold).astype(int)
             df['churn_prob'] = list(probs)
             df['prediction'] = preds
